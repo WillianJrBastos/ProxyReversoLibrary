@@ -25,3 +25,15 @@ def listar_livros():
     conn.close()
     return jsonify(livros)
 
+@app.route("/api/livros/<int:livro_id>", methods=["GET"])
+def obter_livro(livro_id):
+    conn = get_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor.execute("SELECT * FROM livros WHERE id = %s;", (livro_id,))
+    livro = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    
+    if livro is None:
+        return jsonify({"erro": "Livro não encontrado"}), 404
+    return jsonify(livro)
