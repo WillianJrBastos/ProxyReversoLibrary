@@ -56,8 +56,12 @@ def deletar_livro(livro_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM livros WHERE id = %s;", (livro_id,))
-    
+
     conn.commit()
     cursor.close()
     conn.close()
     return jsonify({"mensagem": "Livro removido"})
+
+@app.route("/api/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok"})
