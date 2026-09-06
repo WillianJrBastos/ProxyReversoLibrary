@@ -45,7 +45,19 @@ def criar_livro():
     cursor = conn.cursor()
     cursor.execute("INSERT INTO livros (titulo, autor, ano_publicacao) VALUES (%s, %s, %s) RETURNING id;", (dados["titulo"], dados["autor"], dados.get("ano_publicacao")))
     novo_id = cursor.fetchone()[0]
+
     conn.commit()
     cursor.close()
     conn.close()
     return jsonify({"id": novo_id, "mensagem": "Livro criado com sucesso"}), 201
+
+@app.route("/api/livros/<int:livro_id>", methods=["DELETE"])
+def deletar_livro(livro_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM livros WHERE id = %s;", (livro_id,))
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"mensagem": "Livro removido"})
