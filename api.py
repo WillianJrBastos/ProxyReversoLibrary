@@ -33,7 +33,19 @@ def obter_livro(livro_id):
     livro = cursor.fetchone()
     cursor.close()
     conn.close()
-    
+
     if livro is None:
         return jsonify({"erro": "Livro não encontrado"}), 404
     return jsonify(livro)
+
+@app.route("/api/livros", methods=["POST"])
+def criar_livro():
+    dados = request.get_json()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO livros (titulo, autor, ano_publicacao) VALUES (%s, %s, %s) RETURNING id;", (dados["titulo"], dados["autor"], dados.get("ano_publicacao")))
+    novo_id = cursor.fetchone()[0]
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"id": novo_id, "mensagem": "Livro criado com sucesso"}), 201
