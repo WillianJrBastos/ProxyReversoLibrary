@@ -14,3 +14,14 @@ DB_CONFIG = {
 
 def get_connection():
     return psycopg2.connect(**DB_CONFIG)
+
+@app.route("/api/livros", methods=["GET"])
+def listar_livros():
+    conn = get_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor.execute("SELECT * FROM livros ORDER BY id;")
+    livros = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(livros)
+
