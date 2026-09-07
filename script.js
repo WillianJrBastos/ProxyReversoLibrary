@@ -1,4 +1,4 @@
-const API_URL = "/api/livros";
+const API_URL = "http://192.168.56.10/api/livros";
 
 const corpoTabela = document.getElementById("corpo-tabela");
 const form = document.getElementById("form-livro");
