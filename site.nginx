@@ -2,6 +2,9 @@ server {
     listen 80;
     server_name _;
 
+    root /var/www/Biblioteca;
+    index index.html
+
     location /api/ {
         proxy_pass http://192.168.56.20:5000/api/;
         proxy_set_header Host $host;
@@ -11,7 +14,6 @@ server {
     }
 
     location / {
-        return 200 'Proxy reverso da Biblioteca ativo. Use /api/livros\n';
-        add_header Content-Type text/plain;
+        try_files $uri $uri/ =404;
     }
 }
