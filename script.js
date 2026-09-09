@@ -36,7 +36,7 @@ async function excluirLivro(id) {
   try {
     await fetch(`${API_URL}/${id}`, { method: "DELETE" });
     carregarLivros();
-  } catch (erro) {
+  } catch (erro) {  
     mensagem.textContent = "Erro ao excluir livro: " + erro;
   }
 }

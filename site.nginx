@@ -3,7 +3,7 @@ server {
     server_name _;
 
     root /var/www/Biblioteca;
-    index index.html
+    index index.html;
 
     location /api/ {
         proxy_pass http://192.168.56.20:5000/api/;
